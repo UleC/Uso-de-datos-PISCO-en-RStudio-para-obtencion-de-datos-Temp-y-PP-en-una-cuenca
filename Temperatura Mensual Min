@@ -1,6 +1,6 @@
 #1° Debes de crear una carpeta y guardarla, de preferencia en el disco "D".
 #2° Subir los datos PISCO, todos los que trabajarás en esa carpeta
-#3° Subir el contorno de la cuenca en archivo SHAPE
+#3° Subir todos los archivos SHAPE de la cuenca a trabajar (RamisCuencaWGS)
 #4°:
 
 #4.1: SUBIENDO PACK
@@ -17,9 +17,10 @@ library(ncdf4)
 
 Pisco.temp.mmin<-brick("PISCOtmmin.nc") #No olvides poner el nombre(PISCOtmmin) y la extension(.nc) de PISCO
 library(rgdal)
-cuenca<-readOGR(dsn=".",layer = "RamisCuencaWGS")
+cuenca<-readOGR(dsn=".",layer = "RamisCuencaWGS") #NO OLVIDES PONER SOLO EL NOMBRE (RamisCuencaWGS) DE TU CUENCA
 plot(cuenca)
 tem.min.cuenca.m<-extract(Pisco.temp.mmin, cuenca, fun=mean)
-range(tem.min.cuenca.m) #Brinda la PP minima y maxima
-plot(tem.min.cuenca.m[1,], type = "l", col="blue", ylim=c(-7.5,5.5), ylab="Temperatura (°c)", xlab="Dias", main= "Temperatura Mínima Mensual de la Cuenca Ramis")
-write.csv(t(tem.min.cuenca.m), 'Tmmin_CRamis.csv')
+range(tem.min.cuenca.m) #Brinda la tmmin minima y maxima
+plot(tem.min.cuenca.m[1,], type = "l", col="blue", ylim=c(-7.5,5.5), ylab="Temperatura (°c)", xlab="Dias", main= "Temperatura Mínima Mensual de la Cuenca Ramis") #Adquieres la tabla con los datos 
+write.csv(t(tem.min.cuenca.m), 'Tmmin_CRamis.csv') #adquieres los datos en formato "csv." y lo guarda en la carpeta que creaste
+
