@@ -1,6 +1,6 @@
 #1° Debes de crear una carpeta y guardarla, de preferencia en el disco "D".
 #2° Subir los datos PISCO, todos los que trabajarás en esa carpeta
-#3° Subir el contorno de la cuenca en archivo SHAPE
+#3° Subir todos los archivos SHAPE de la cuenca a trabajar (RamisCuencaWGS)
 #4°:
 
 #4.1: SUBIENDO PACK
@@ -17,10 +17,10 @@ library(ncdf4)
 
 Pisco.temp.dmax<-brick("PISCOtdmax.nc") #No olvides poner el nombre(PISCOtdmax) y la extension(.nc) de PISCO
 library(rgdal)
-cuenca<-readOGR(dsn=".",layer = "RamisCuencaWGS")
+cuenca<-readOGR(dsn=".",layer = "RamisCuencaWGS") #NO OLVIDES PONER SOLO EL NOMBRE (RamisCuencaWGS) DE TU CUENCA
 plot(cuenca)
 tem.max.cuenca.d<-extract(Pisco.temp.dmax, cuenca, fun=mean)
-range(tem.max.cuenca.d) #Brinda la PP minima y maxima
-plot(tem.max.cuenca.d[1,], type = "l", col="blue", ylim=c(8,22), ylab="Temperatura (°c)", xlab="Dias", main= "Temperatura Máxima diaria de la Cuenca Ramis")
+range(tem.max.cuenca.d) #Brinda la tdmax minima y maxima
+plot(tem.max.cuenca.d[1,], type = "l", col="blue", ylim=c(8,22), ylab="Temperatura (°c)", xlab="Dias", main= "Temperatura Máxima diaria de la Cuenca Ramis") #Adquieres la tabla con los datos 
 write.csv(t(tem.max.cuenca.d), 'Tdmax_CRamis.csv')
 
