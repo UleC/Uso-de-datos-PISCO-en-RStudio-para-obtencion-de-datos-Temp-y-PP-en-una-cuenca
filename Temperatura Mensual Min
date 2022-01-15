@@ -1,0 +1,25 @@
+#1° Debes de crear una carpeta y guardarla, de preferencia en el disco "D".
+#2° Subir los datos PISCO, todos los que trabajarás en esa carpeta
+#3° Subir el contorno de la cuenca en archivo SHAPE
+#4°:
+
+#4.1: SUBIENDO PACK
+
+setwd("D:/LEER_PISCO") #Pones la direccion de la carpeta"
+install.packages("raster")
+install.packages("ncdf4")
+install.packages("rgdal")
+library(sp)
+library(raster)
+library(ncdf4)
+
+#4.2: Hallando la temp mensual min Enero 1981-Dic 2016
+
+Pisco.temp.mmin<-brick("PISCOtmmin.nc") #No olvides poner el nombre(PISCOtmmin) y la extension(.nc) de PISCO
+library(rgdal)
+cuenca<-readOGR(dsn=".",layer = "RamisCuencaWGS")
+plot(cuenca)
+tem.min.cuenca.m<-extract(Pisco.temp.mmin, cuenca, fun=mean)
+range(tem.min.cuenca.m) #Brinda la PP minima y maxima
+plot(tem.min.cuenca.m[1,], type = "l", col="blue", ylim=c(-7.5,5.5), ylab="Temperatura (°c)", xlab="Dias", main= "Temperatura Mínima Mensual de la Cuenca Ramis")
+write.csv(t(tem.min.cuenca.m), 'Tmmin_CRamis.csv')
