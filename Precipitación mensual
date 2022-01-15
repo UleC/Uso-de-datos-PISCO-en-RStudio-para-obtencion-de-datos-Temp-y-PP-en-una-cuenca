@@ -15,7 +15,7 @@ library(ncdf4)
 
 #4.2: Hallando la Precipitacion mensual Enero 1981-Dic 2016
 
-Pisco.precip<-brick("PISCOpm.nc") #Aqui pones el nombre completo de tu producto PISCO junto con su extension
+Pisco.precip<-brick("PISCOpm.nc") #No olvides poner el nombre de tu PISCO(PISCOpd) junto con su extensón(.nc)
 library(rgdal)
 cuenca<-readOGR(dsn=".",layer = "RamisCuencaWGS")
 plot(cuenca)
