@@ -1,0 +1,25 @@
+#1° Debes de crear una carpeta y guardarla, de preferencia en el disco "D".
+#2° Subir los datos PISCO, todos los que trabajarás en esa carpeta
+#3° Subir el contorno de la cuenca en archivo SHAPE
+#4°:
+
+#4.1: SUBIENDO PACK
+
+setwd("D:/LEER_PISCO") #Pones la direccion de la carpeta"
+install.packages("raster")
+install.packages("ncdf4")
+install.packages("rgdal")
+library(sp)
+library(raster)
+library(ncdf4)
+
+#4.2: Hallando la Precipitacion mensual Enero 1981-Dic 2016
+
+Pisco.precip<-brick("PISCOpm.nc") #Aqui pones el nombre completo de tu producto PISCO junto con su extension
+library(rgdal)
+cuenca<-readOGR(dsn=".",layer = "RamisCuencaWGS")
+plot(cuenca)
+precip.cuenca.men<-extract(Pisco.precip, cuenca, fun=mean)
+range(precip.cuenca.men) #Brinda la PP minima y maxima 
+plot(precip.cuenca.men[1,], type = "l", col="blue", ylim=c(0,256), ylab="Precipitacion mm", xlab="meses", main= "Precipitación Mensual de la Cuenca Ramis") #Adquieres la tabla con los datos 
+write.csv(t(precip.cuenca.men), 'PpMensual_CRamis.csv') #adquieres los datos en formato "csv." y lo guarda en la carpeta que creaste
