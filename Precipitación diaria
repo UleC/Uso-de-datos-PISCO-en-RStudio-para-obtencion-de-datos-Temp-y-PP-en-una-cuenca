@@ -22,5 +22,5 @@ plot(cuenca)
 precip.cuenca.dia<-extract(Pisco.precip, cuenca, fun=mean)
 range(precip.cuenca.dia) #Brinda la PPd minima y maxima
 plot(precip.cuenca.dia[1,], type = "l", col="blue", ylim=c(0,30), ylab="Precipitacion mm", xlab="días", main= "Precipitacion Diaria de la Cuenca Ramis") #Adquieres la tabla con los datos 
-write.csv(t(precip.cuenca.men), 'PpDiaria_CRamis.csv') #adquieres los datos en formato "csv." y lo guarda en la carpeta que creaste
+write.csv(t(precip.cuenca.dia), 'PpDiaria_CRamis.csv') #adquieres los datos en formato "csv." y lo guarda en la carpeta que creaste
 
