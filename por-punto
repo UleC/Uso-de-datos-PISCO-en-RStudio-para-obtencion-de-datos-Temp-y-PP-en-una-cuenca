@@ -1,0 +1,47 @@
+## Leer puntos de estaciones de datos PISCO de prec a partir de 
+# puntos de estaciones que estan almacenados en un archivo *.csv
+# Autores: Adrian Huerta & Waldo Lavado
+setwd("E:/2018/Leer PISCO")# Esta es la ruta de la carpeta donde esta 
+Pisco 
+# y deben estar el archivo *.csv con los puntos a extraer
+# ojo que es / no \
+#### Descargar datos PISCO de: http://www.senamhi.gob.pe/?p=observacionde-inundaciones
+#### En la parte inferior ir a la carpeta Datos SONICS (DESCARGAS)
+#### bajar de preferencia los datos de la carpeta PISCO_v2.0
+####ftp://ftp.senamhi.gob.pe/PISCO_v2.0/ ## PISCO_Pd_v2.0 son diarios y
+# PISCO_Pm_v2.0 son mensuales
+# Este ejemplo es para los datos mensuales PISCOpm.nc
+rm(list = ls())
+install.packages("raster")#Instalar el paquete comentar # si ya esta 
+instalado
+install.packages("ncdf4")#Instalar el paquete comentar # si ya esta 
+instalado
+library(raster)#cargar el paquete
+library(ncdf4)#cargar el paquete
+## Leer el archivo long_lat.csv (ver el archivo ejemplo)
+## para agregar solo dismnuya o incremente las coordenadas de las 
+filas 
+## XX Longitud e YY Latitud
+long_lat <- read.csv("long_lat.csv", header = T)
+### Ensamblamos los datos *.nc
+raster_pp <- raster::brick("PISCOpm.nc")
+## Asignamos las coordenadas 
+sp::coordinates(long_lat) <- ~XX+YY
+# Igualamos las proyecciones del raster y de laos puntos a extraer
+raster::projection(long_lat) <- raster::projection(raster_pp)
+# Extraemos los valores
+points_long_lat <- raster::extract(raster_pp[[1]], long_lat, 
+cellnumbers = T)[,1]
+data_long_lat <- t(raster_pp[points_long_lat])
+colnames(data_long_lat) <- as.character(long_lat$NN)
+# Guardamos los datos como "data_long_lat.csv" Ud puede cambiar el 
+nombre
+# Las filas son los datos mensuales en este caso y las columnas son 
+los puntos seleccionados
+# Ojo que el orden esta de acuerdo al archivo long_lat.csv, de la 
+columna NN
+
+####: opcional
+
+#Esto va al final; es decir, primero copia todo lo que está arriba, y por ultimo, copia el codigo que está debajo
+write.csv(data_long_lat, "data_long_lat.csv", quote = F)
